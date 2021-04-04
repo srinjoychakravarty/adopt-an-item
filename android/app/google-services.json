@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "66376083910",
+    "firebase_url": "https://srinjoy-neu-spring-2021-default-rtdb.firebaseio.com",
+    "project_id": "srinjoy-neu-spring-2021",
+    "storage_bucket": "srinjoy-neu-spring-2021.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66376083910:android:41a48d07803231b0436ac7",
+        "android_client_info": {
+          "package_name": "com.example.firebase_with_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66376083910-ct1p47u0jemjjfmpn5i4qmmvo1js13ro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCahI4NwWjQ2-_KFwwSkq5ZPDzN9imrX_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66376083910-ct1p47u0jemjjfmpn5i4qmmvo1js13ro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66376083910:android:7cc51ddbf6a08628436ac7",
+        "android_client_info": {
+          "package_name": "com.example.login_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66376083910-ct1p47u0jemjjfmpn5i4qmmvo1js13ro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCahI4NwWjQ2-_KFwwSkq5ZPDzN9imrX_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66376083910-ct1p47u0jemjjfmpn5i4qmmvo1js13ro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
