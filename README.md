@@ -45,3 +45,27 @@ $ flutter run
 
 <br/>
 <br/>
+
+   ![Tile](confirmationsent.png)
+   > App notifies user that email confirmation is sent
+<br/>
+<br/>
+
+<br/>
+<br/>
+
+   ![Tile](emailreceived.png)
+   > Confirmation link is received on user's inbox via smtp
+<br/>
+<br/>
+
+<br/>
+<br/>
+
+   ![Tile](emailvalidated.png)
+   > Email is successfully validate on hyperlink being clicked
+<br/>
+<br/>
+
+<br/>
+<br/>

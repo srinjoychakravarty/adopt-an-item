@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_app/src/screens/home.dart';
+import 'package:login_app/src/screens/verify.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -48,19 +49,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Theme.of(context).accentColor,
                 child: Text('Sign in'),
                 onPressed: () {
-                  auth.signInWithEmailAndPassword(
-                      email: _email, password: _password);
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                  auth
+                      .signInWithEmailAndPassword(
+                          email: _email, password: _password)
+                      .then((_) {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  });
                 }),
             RaisedButton(
               color: Theme.of(context).accentColor,
               child: Text('Register'),
               onPressed: () {
-                auth.createUserWithEmailAndPassword(
-                    email: _email, password: _password);
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
+                auth
+                    .createUserWithEmailAndPassword(
+                        email: _email, password: _password)
+                    .then((_) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => VerifyScreen()));
+                });
               },
             )
           ]),
