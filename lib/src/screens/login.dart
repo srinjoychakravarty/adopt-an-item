@@ -17,7 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text(
+          'Login',
+          style: TextStyle(color: Colors.grey.shade700),
+        ),
       ),
       body: Column(
         children: [
@@ -48,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             RaisedButton(
                 color: Theme.of(context).accentColor,
+                textColor: Colors.white,
                 child: Text('Sign in'),
                 onPressed: () {
                   auth
@@ -60,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }),
             RaisedButton(
               color: Theme.of(context).accentColor,
+              textColor: Colors.white,
               child: Text('Register'),
               onPressed: () {
                 auth

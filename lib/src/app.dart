@@ -7,7 +7,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Login App',
       theme: ThemeData(
-        accentColor: Colors.brown.shade300,
+        accentColor: Colors.brown.shade400,
         primarySwatch: Colors.lime,
       ),
       home: LoginScreen(),

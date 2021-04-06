@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
@@ -17,23 +18,39 @@ class _HomeState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Create Garage Item')),
-      body: Column(
-        children: <Widget>[
-          (imageUrl != null || imageUrl != "")
-              ? Image.network(imageUrl)
-              : Placeholder(
-                  fallbackHeight: 200.0,
-                  fallbackWidth: double.infinity,
-                ),
-          SizedBox(
-            height: 20.0,
-          ),
-          RaisedButton(
-            child: Text('Upload Image'),
-            color: Colors.brown,
-            onPressed: () => uploadImage(),
-          )
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: Column(
+          children: <Widget>[
+            (imageUrl == null || imageUrl == "")
+                ? Stack(
+                    children: <Widget>[
+                      Center(child: CircularProgressIndicator()),
+                      Center(
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: 'https://picsum.photos/250?image=9',
+                        ),
+                      ),
+                    ],
+                  )
+                : Stack(
+                    children: <Widget>[
+                      Center(child: CircularProgressIndicator()),
+                      Center(child: Image.network(imageUrl)),
+                    ],
+                  ),
+            SizedBox(
+              height: 20.0,
+            ),
+            RaisedButton(
+              child: Text('Upload Image'),
+              color: Colors.brown,
+              textColor: Colors.white,
+              onPressed: () => uploadImage(),
+            )
+          ],
+        ),
       ),
     );
   }
