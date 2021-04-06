@@ -59,6 +59,7 @@ class _HomeState extends State<HomeScreen> {
         var snapshot = await _storage.ref().child('srinjoy/item').putFile(file);
 
         var downloadUrl = await snapshot.ref.getDownloadURL();
+        print(downloadUrl);
 
         setState(() {
           imageUrl = downloadUrl;
