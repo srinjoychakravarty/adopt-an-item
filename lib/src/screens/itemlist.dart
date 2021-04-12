@@ -1,6 +1,11 @@
 // ignore: import_of_legacy_library_into_null_safe
+import 'package:extended_image/extended_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:http/http.dart' as http;
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 
 class ItemList extends StatefulWidget {
   ItemList({Key? key, required this.title}) : super(key: key);
@@ -40,6 +45,7 @@ class _ItemListState extends State<ItemList> {
                             Text("Name: " + lists[index]["name"]),
                             Text("Age: " + lists[index]["age"]),
                             Text("Type: " + lists[index]["type"]),
+                            Image.network(lists[index]["image"]),
                           ],
                         ),
                       );
@@ -48,4 +54,40 @@ class _ItemListState extends State<ItemList> {
               return CircularProgressIndicator();
             }));
   }
+
+  _resizeImage(String firebaseImageURL) async {
+    http.Response response = await http.get(Uri.parse(firebaseImageURL));
+    var originalUnit8List = response.bodyBytes;
+    ui.Image originalUiImage = await decodeImageFromList(originalUnit8List);
+    ByteData? originalByteData = await originalUiImage.toByteData();
+    print('original image ByteData size is ${originalByteData!.lengthInBytes}');
+    var codec = await ui.instantiateImageCodec(originalUnit8List,
+        targetHeight: 50, targetWidth: 50);
+    var frameInfo = await codec.getNextFrame();
+    ui.Image targetUiImage = frameInfo.image;
+    ByteData? targetByteData =
+        await targetUiImage.toByteData(format: ui.ImageByteFormat.png);
+    print('target image ByteData size is ${targetByteData!.lengthInBytes}');
+    var targetlUinit8List = targetByteData.buffer.asUint8List();
+    return targetlUinit8List;
+  }
+
+  // _resizeImage(String firebaseImageURL) {
+  //   http.Response response =
+  //       http.get(Uri.parse(firebaseImageURL)) as http.Response;
+  //   var originalUnit8List = response.bodyBytes;
+  //   ui.Image originalUiImage =
+  //       decodeImageFromList(originalUnit8List) as ui.Image;
+  //   ByteData? originalByteData = originalUiImage.toByteData() as ByteData?;
+  //   print('original image ByteData size is ${originalByteData!.lengthInBytes}');
+  //   var codec = ui.instantiateImageCodec(originalUnit8List,
+  //       targetHeight: 50, targetWidth: 50);
+  //   var frameInfo = codec.getNextFrame();
+  //   ui.Image targetUiImage = frameInfo.image;
+  //   ByteData? targetByteData =
+  //       targetUiImage.toByteData(format: ui.ImageByteFormat.png) as ByteData?;
+  //   print('target image ByteData size is ${targetByteData!.lengthInBytes}');
+  //   var targetlUinit8List = targetByteData.buffer.asUint8List();
+  //   return targetlUinit8List;
+  // }
 }

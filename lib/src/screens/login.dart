@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Fluttertoast.showToast(
           msg: error.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 8,
           backgroundColor: Colors.brown.shade200,
           textColor: Colors.white,
@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Fluttertoast.showToast(
           msg: error.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 8,
           backgroundColor: Colors.brown.shade200,
           textColor: Colors.white,

@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:login_app/src/screens/itemlist.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_database/firebase_database.dart';
+import 'dart:math';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -89,7 +90,8 @@ class _HomeState extends State<HomeScreen> {
       // ignore: unnecessary_null_comparison
       if (image != null) {
         // Upload to Firebase
-        var snapshot = await _storage.ref().child('srinjoy/item').putFile(file);
+        var snapshot =
+            await _storage.ref().child(getRandomString(15)).putFile(file);
 
         var downloadUrl = await snapshot.ref.getDownloadURL();
         print(downloadUrl);
@@ -104,6 +106,13 @@ class _HomeState extends State<HomeScreen> {
       print('Error: Gallery permission not granted!');
     }
   }
+
+  static const _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  Random _rnd = Random();
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 }
 
 class RegisterItem extends StatefulWidget {
@@ -115,6 +124,7 @@ class RegisterItem extends StatefulWidget {
 }
 
 class _RegisterItemState extends State<RegisterItem> {
+  String imageUrl = "";
   final _formKey = GlobalKey<FormState>();
   final listOfPets = ["Clothing", "Food", "Electronics"];
   String dropdownValue = 'Clothing';
@@ -129,7 +139,6 @@ class _RegisterItemState extends State<RegisterItem> {
         child: Flexible(
             child: SingleChildScrollView(
                 child: Column(children: <Widget>[
-          Text(widget.firebaseStorageURL),
           Padding(
             padding: EdgeInsets.all(20.0),
             child: TextFormField(
@@ -223,7 +232,14 @@ class _RegisterItemState extends State<RegisterItem> {
                         });
                       }
                     },
-                    child: Text('Submit'),
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.lime,
+                        onPrimary: Colors.black,
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          fontStyle: FontStyle.italic,
+                        )),
+                    child: Text('Put Item up for Adoption'),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -233,7 +249,7 @@ class _RegisterItemState extends State<RegisterItem> {
                             builder: (context) => ItemList(title: "Item List")),
                       );
                     },
-                    child: Text('Navigate'),
+                    child: Text('Adopt an Item'),
                   ),
                 ],
               )),

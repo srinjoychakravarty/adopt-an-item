@@ -20,11 +20,15 @@ dependencies:
   permission_handler: ^6.1.1
   firebase_auth: ^1.0.3
   fluttertoast: ^8.0.3
+  extended_image: ^4.0.1
+  flutter_screenutil: ^5.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
-
+  assets:
+    - images/
+    - assets/
   uses-material-design: true
