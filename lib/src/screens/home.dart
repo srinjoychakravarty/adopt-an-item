@@ -22,6 +22,7 @@ class _HomeState extends State<HomeScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text(widget.title)),
       body: Padding(
         padding: const EdgeInsets.all(0.0),
@@ -184,7 +185,7 @@ class _RegisterItemState extends State<RegisterItem> {
               keyboardType: TextInputType.number,
               controller: ageController,
               decoration: InputDecoration(
-                labelText: "Enter Item Age",
+                labelText: "Enter Item Age (months)",
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
