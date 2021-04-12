@@ -13,11 +13,12 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.0.2
+  firebase_core: ^1.0.3
+  firebase_database: ^6.1.2
   image_picker: ^0.7.4
-  firebase_storage: ^8.0.1
+  firebase_storage: ^8.0.3
   permission_handler: ^6.1.1
-  firebase_auth: ^1.0.1
+  firebase_auth: ^1.0.3
   fluttertoast: ^8.0.3
 
 dev_dependencies:

@@ -5,7 +5,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login App',
+      debugShowCheckedModeBanner: false,
+      title: 'Garage Sale',
       theme: ThemeData(
         accentColor: Colors.brown.shade300,
         primarySwatch: Colors.lime,

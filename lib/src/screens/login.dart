@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_app/src/screens/home.dart';
 import 'package:login_app/src/screens/reset.dart';
-import 'package:login_app/src/screens/verify.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,11 +18,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Login',
+          'Hyper Garage Sale',
           style: TextStyle(color: Colors.grey.shade700),
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -66,7 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                  child: Text('Reset Password?'),
+                  child: Text(
+                    'Reset Password?',
+                    style: TextStyle(
+                      color: Colors.lime.shade700,
+                    ),
+                  ),
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ResetScreen(),
                       )))
