@@ -11,7 +11,7 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
-  final dbRef = FirebaseDatabase.instance.reference().child("pets");
+  final dbRef = FirebaseDatabase.instance.reference().child("items");
   List<Map<dynamic, dynamic>> lists = [];
 
   @override

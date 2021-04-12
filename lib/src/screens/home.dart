@@ -63,7 +63,7 @@ class _HomeState extends State<HomeScreen> {
                     fontSize: 30,
                     fontFamily: 'Roboto',
                     fontStyle: FontStyle.italic)),
-            RegisterPet(),
+            RegisterItem(firebaseStorageURL: imageUrl),
           ],
         ),
       ),
@@ -105,20 +105,21 @@ class _HomeState extends State<HomeScreen> {
   }
 }
 
-class RegisterPet extends StatefulWidget {
-  RegisterPet({Key? key}) : super(key: key);
+class RegisterItem extends StatefulWidget {
+  final String firebaseStorageURL;
+  RegisterItem({Key? key, required this.firebaseStorageURL}) : super(key: key);
 
   @override
-  _RegisterPetState createState() => _RegisterPetState();
+  _RegisterItemState createState() => _RegisterItemState();
 }
 
-class _RegisterPetState extends State<RegisterPet> {
+class _RegisterItemState extends State<RegisterItem> {
   final _formKey = GlobalKey<FormState>();
   final listOfPets = ["Clothing", "Food", "Electronics"];
   String dropdownValue = 'Clothing';
   final nameController = TextEditingController();
   final ageController = TextEditingController();
-  final dbRef = FirebaseDatabase.instance.reference().child("pets");
+  final dbRef = FirebaseDatabase.instance.reference().child("items");
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +128,7 @@ class _RegisterPetState extends State<RegisterPet> {
         child: Flexible(
             child: SingleChildScrollView(
                 child: Column(children: <Widget>[
+          Text(widget.firebaseStorageURL),
           Padding(
             padding: EdgeInsets.all(20.0),
             child: TextFormField(
@@ -207,7 +209,8 @@ class _RegisterPetState extends State<RegisterPet> {
                         dbRef.push().set({
                           "name": nameController.text,
                           "age": ageController.text,
-                          "type": dropdownValue
+                          "type": dropdownValue,
+                          "image": widget.firebaseStorageURL,
                         }).then((_) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Successfully Added')));
