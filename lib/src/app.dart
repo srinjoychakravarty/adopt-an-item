@@ -6,7 +6,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Garage Sale',
+      title: 'Item Adoption',
       theme: ThemeData(
         accentColor: Colors.brown.shade300,
         primarySwatch: Colors.lime,

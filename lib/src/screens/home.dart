@@ -54,7 +54,10 @@ class _HomeState extends State<HomeScreen> {
               textColor: Colors.white,
               onPressed: () => uploadImage(),
             ),
-            Text("Please Sign Up Your Animal ",
+            SizedBox(
+              height: 20.0,
+            ),
+            Text("Put an Item up for Adoption",
                 style: TextStyle(
                     fontWeight: FontWeight.w200,
                     fontSize: 30,
@@ -111,8 +114,8 @@ class RegisterPet extends StatefulWidget {
 
 class _RegisterPetState extends State<RegisterPet> {
   final _formKey = GlobalKey<FormState>();
-  final listOfPets = ["Cats", "Dogs", "Rabbits"];
-  String dropdownValue = 'Cats';
+  final listOfPets = ["Clothing", "Food", "Electronics"];
+  String dropdownValue = 'Clothing';
   final nameController = TextEditingController();
   final ageController = TextEditingController();
   final dbRef = FirebaseDatabase.instance.reference().child("pets");
@@ -121,14 +124,15 @@ class _RegisterPetState extends State<RegisterPet> {
   Widget build(BuildContext context) {
     return Form(
         key: _formKey,
-        child: SingleChildScrollView(
-            child: Column(children: <Widget>[
+        child: Flexible(
+            child: SingleChildScrollView(
+                child: Column(children: <Widget>[
           Padding(
             padding: EdgeInsets.all(20.0),
             child: TextFormField(
               controller: nameController,
               decoration: InputDecoration(
-                labelText: "Enter Pet Name",
+                labelText: "Enter Item Name",
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -136,7 +140,7 @@ class _RegisterPetState extends State<RegisterPet> {
               // The validator receives the text that the user has entered.
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Enter Pet Name';
+                  return 'Item Name is required!';
                 }
                 return null;
               },
@@ -148,7 +152,7 @@ class _RegisterPetState extends State<RegisterPet> {
               value: dropdownValue,
               icon: Icon(Icons.arrow_downward),
               decoration: InputDecoration(
-                labelText: "Select Pet Type",
+                labelText: "Select Item Category",
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -166,7 +170,7 @@ class _RegisterPetState extends State<RegisterPet> {
               },
               validator: (value) {
                 if (value == 'null') {
-                  return 'Please Select Pet';
+                  return 'Item must belong to a valid category!';
                 }
                 return null;
               },
@@ -178,7 +182,7 @@ class _RegisterPetState extends State<RegisterPet> {
               keyboardType: TextInputType.number,
               controller: ageController,
               decoration: InputDecoration(
-                labelText: "Enter Pet Age",
+                labelText: "Enter Item Age",
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -186,7 +190,7 @@ class _RegisterPetState extends State<RegisterPet> {
               // The validator receives the text that the user has entered.
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Please Pet Age';
+                  return 'Item age is required!';
                 }
                 return null;
               },
@@ -229,6 +233,6 @@ class _RegisterPetState extends State<RegisterPet> {
                   ),
                 ],
               )),
-        ])));
+        ]))));
   }
 }

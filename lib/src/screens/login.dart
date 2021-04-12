@@ -18,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Hyper Garage Sale',
+          'Item Adoption Centre  ⛏',
           style: TextStyle(color: Colors.grey.shade700),
         ),
       ),
