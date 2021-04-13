@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  firebase_ml_vision: ^0.11.0+2
   firebase_core: ^1.0.3
   firebase_database: ^6.1.2
   image_picker: ^0.7.4

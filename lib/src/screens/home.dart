@@ -9,6 +9,8 @@ import 'package:login_app/src/screens/itemlist.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:math';
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'dart:io' as io;
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -20,6 +22,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeState extends State<HomeScreen> {
   final auth = FirebaseAuth.instance;
   String imageUrl = "";
+
+  late final File _image;
+
+  final ImageLabeler _imageLabeler = FirebaseVision.instance.imageLabeler();
+  var result;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +57,26 @@ class _HomeState extends State<HomeScreen> {
             SizedBox(
               height: 20.0,
             ),
+            Container(
+              child: Center(
+                child: result == null
+                    ? Text("Nothing here...")
+                    : Text(
+                        result,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            FloatingActionButton(
+              onPressed: () => getImage(),
+              tooltip: 'Pick an item image...',
+              child: Icon(Icons.add_a_photo),
+              backgroundColor: Colors.brown,
+              foregroundColor: Colors.white,
+            ),
             RaisedButton(
               child: Text('Upload Image'),
               color: Colors.brown,
@@ -61,7 +88,7 @@ class _HomeState extends State<HomeScreen> {
             ),
             Text("Put an Item up for Adoption",
                 style: TextStyle(
-                    fontWeight: FontWeight.w200,
+                    fontWeight: FontWeight.bold,
                     fontSize: 30,
                     fontFamily: 'Roboto',
                     fontStyle: FontStyle.italic)),
@@ -72,9 +99,39 @@ class _HomeState extends State<HomeScreen> {
     );
   }
 
+  Future getImage() async {
+    final _picker = ImagePicker();
+    final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        processImageLabels();
+      } else {
+        print('No image selected...');
+      }
+    });
+  }
+
+  processImageLabels() async {
+    FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(_image);
+    ImageLabeler labeler = FirebaseVision.instance.imageLabeler();
+    var _imageLabels = await labeler.processImage(myImage);
+    result = "";
+    for (ImageLabel imageLabel in _imageLabels) {
+      setState(() {
+        result = result +
+            imageLabel.text +
+            ":" +
+            imageLabel.confidence.toString() +
+            "\n";
+      });
+    }
+  }
+
   Future uploadImage() async {
     final _storage = FirebaseStorage.instance;
     final _picker = ImagePicker();
+
     PickedFile image;
 
     // Check Permissions
@@ -234,12 +291,13 @@ class _RegisterItemState extends State<RegisterItem> {
                     },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.lime,
-                        onPrimary: Colors.black,
+                        onPrimary: Colors.grey.shade700,
                         textStyle: TextStyle(
                           fontSize: 15,
                           fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
                         )),
-                    child: Text('Put Item up for Adoption'),
+                    child: Text('List Item'),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -249,7 +307,12 @@ class _RegisterItemState extends State<RegisterItem> {
                             builder: (context) => ItemList(title: "Item List")),
                       );
                     },
-                    child: Text('Adopt an Item'),
+                    child: Text(
+                      'Available Items',
+                      style: TextStyle(
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
                   ),
                 ],
               )),
