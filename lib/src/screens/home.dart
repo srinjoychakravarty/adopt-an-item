@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as Path;
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +12,7 @@ import 'package:login_app/src/screens/itemlist.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:math';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'dart:io' as io;
 
@@ -29,6 +33,8 @@ class _HomeState extends State<HomeScreen> {
   final ImageLabeler _imageLabeler = FirebaseVision.instance.imageLabeler();
   var result;
 
+  late CollectionReference imgRef;
+  late firebase_storage.Reference ref;
   List<File> _imageFileList = [];
 
   Widget build(BuildContext context) {
@@ -146,6 +152,19 @@ class _HomeState extends State<HomeScreen> {
       });
     } else {
       print(response.file);
+    }
+  }
+
+  Future uploadFile() async {
+    for (var img in _imageFileList) {
+      ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('images/${Path.basename(img.path)}');
+      await ref.putFile(img).whenComplete(() async {
+        await ref.getDownloadURL().then((value) {
+          imgRef.add({'url': value});
+        });
+      });
     }
   }
 
