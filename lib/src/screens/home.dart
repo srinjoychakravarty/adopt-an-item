@@ -20,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
+  final _picker = ImagePicker();
   final auth = FirebaseAuth.instance;
   String imageUrl = "";
 
@@ -27,6 +28,8 @@ class _HomeState extends State<HomeScreen> {
 
   final ImageLabeler _imageLabeler = FirebaseVision.instance.imageLabeler();
   var result;
+
+  List<File> _imageFileList = [];
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +57,30 @@ class _HomeState extends State<HomeScreen> {
                       Center(child: Image.network(imageUrl)),
                     ],
                   ),
+            new Expanded(
+              child: GridView.builder(
+                  itemCount: _imageFileList.length + 1,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3),
+                  itemBuilder: (context, index) {
+                    return index == 0
+                        ? Center(
+                            child: IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                chooseImage();
+                              },
+                            ),
+                          )
+                        : Container(
+                            margin: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: FileImage(_imageFileList[index - 1]),
+                                    fit: BoxFit.cover)),
+                          );
+                  }),
+            ),
             SizedBox(
               height: 20.0,
             ),
@@ -99,8 +126,31 @@ class _HomeState extends State<HomeScreen> {
     );
   }
 
+  chooseImage() async {
+    // final _picker = ImagePicker();
+    final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
+    setState(() {
+      _imageFileList.add(File(pickedFile.path));
+    });
+    if (pickedFile.path == null) retrieveLostData();
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostData response = await _picker.getLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    if (response.file != null) {
+      setState(() {
+        _imageFileList.add(File(response.file!.path));
+      });
+    } else {
+      print(response.file);
+    }
+  }
+
   Future getImage() async {
-    final _picker = ImagePicker();
+    // final _picker = ImagePicker();
     final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
     setState(() {
       if (pickedFile != null) {
