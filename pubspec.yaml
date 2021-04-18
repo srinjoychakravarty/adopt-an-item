@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  firebase_ml_vision: ^0.11.0+2
+  firebase_ml_vision: ^0.12.0
   firebase_core: ^1.0.3
   firebase_database: ^6.1.2
   image_picker: ^0.7.4
@@ -28,6 +28,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: ^0.9.0
+
+flutter_icons:
+  image_path: "icon/icon.png"
+  android: true
+  ios: true
 
 flutter:
   assets:

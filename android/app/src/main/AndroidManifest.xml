@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.login_app">
    <application
-        android:label="login_app"
+        android:label="store"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
