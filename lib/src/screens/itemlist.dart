@@ -46,6 +46,21 @@ class _ItemListState extends State<ItemList> {
                             Text("Age: " + lists[index]["age"]),
                             Text("Type: " + lists[index]["type"]),
                             Image.network(lists[index]["image"]),
+                            SizedBox(
+                                height: 300,
+                                child: GridView.count(
+                                  crossAxisCount: 2,
+                                  children: List.generate(4, (index) {
+                                    return Center(
+                                      child: Text(
+                                        'Item $index',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5,
+                                      ),
+                                    );
+                                  }),
+                                )),
                           ],
                         ),
                       );
@@ -71,23 +86,4 @@ class _ItemListState extends State<ItemList> {
     var targetlUinit8List = targetByteData.buffer.asUint8List();
     return targetlUinit8List;
   }
-
-  // _resizeImage(String firebaseImageURL) {
-  //   http.Response response =
-  //       http.get(Uri.parse(firebaseImageURL)) as http.Response;
-  //   var originalUnit8List = response.bodyBytes;
-  //   ui.Image originalUiImage =
-  //       decodeImageFromList(originalUnit8List) as ui.Image;
-  //   ByteData? originalByteData = originalUiImage.toByteData() as ByteData?;
-  //   print('original image ByteData size is ${originalByteData!.lengthInBytes}');
-  //   var codec = ui.instantiateImageCodec(originalUnit8List,
-  //       targetHeight: 50, targetWidth: 50);
-  //   var frameInfo = codec.getNextFrame();
-  //   ui.Image targetUiImage = frameInfo.image;
-  //   ByteData? targetByteData =
-  //       targetUiImage.toByteData(format: ui.ImageByteFormat.png) as ByteData?;
-  //   print('target image ByteData size is ${targetByteData!.lengthInBytes}');
-  //   var targetlUinit8List = targetByteData.buffer.asUint8List();
-  //   return targetlUinit8List;
-  // }
 }

@@ -33,6 +33,7 @@ class _ResetScreenState extends State<ResetScreen> {
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             RaisedButton(
                 color: Theme.of(context).accentColor,
+                textColor: Colors.white,
                 child: Text('Send Reset Link'),
                 onPressed: () {
                   auth.sendPasswordResetEmail(email: _email);
