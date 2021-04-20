@@ -27,6 +27,7 @@ class _HomeState extends State<HomeScreen> {
   final _picker = ImagePicker();
   final auth = FirebaseAuth.instance;
   String imageUrl = "";
+  List<String> imageUrls = [];
 
   late final File _image;
 
@@ -79,7 +80,9 @@ class _HomeState extends State<HomeScreen> {
                               child: IconButton(
                                 icon: Icon(Icons.add),
                                 onPressed: () {
-                                  chooseImage();
+                                  !uploading
+                                      ? chooseImage()
+                                      : null; // disable upload button when images in process of uploading
                                 },
                               ),
                             )
@@ -197,21 +200,25 @@ class _HomeState extends State<HomeScreen> {
     int i = 1; //initialized counter of progress bar to 1st image
 
     for (var img in _imageFileList) {
+      // iterate through the _imageFileList array of images picked
       setState(() {
         val = i /
             _imageFileList
                 .length; // set progress state of circular to fraction of total images uploaded
       });
-      ref = firebase_storage.FirebaseStorage.instance
+      ref = firebase_storage.FirebaseStorage
+          .instance // create a reference on FirebaseStorage (cloud) for each image from _imageFileList
           .ref()
           .child('images/${Path.basename(img.path)}');
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
           imgRef.add({'url': value});
+          imageUrls.add(value);
           i++; // after each image upload success to firestore increment state of circular progress bar
         });
       });
     }
+    print(imageUrls);
   }
 
   @override
