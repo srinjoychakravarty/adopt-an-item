@@ -33,6 +33,9 @@ class _HomeState extends State<HomeScreen> {
   final ImageLabeler _imageLabeler = FirebaseVision.instance.imageLabeler();
   var result;
 
+  bool uploading = false;
+  double val = 0;
+
   late CollectionReference imgRef;
   late firebase_storage.Reference ref;
   List<File> _imageFileList = [];
@@ -64,29 +67,64 @@ class _HomeState extends State<HomeScreen> {
                     ],
                   ),
             new Expanded(
-              child: GridView.builder(
-                  itemCount: _imageFileList.length + 1,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
-                  itemBuilder: (context, index) {
-                    return index == 0
-                        ? Center(
-                            child: IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                chooseImage();
-                              },
+                child: Stack(
+              children: [
+                GridView.builder(
+                    itemCount: _imageFileList.length + 1,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3),
+                    itemBuilder: (context, index) {
+                      return index == 0
+                          ? Center(
+                              child: IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  chooseImage();
+                                },
+                              ),
+                            )
+                          : Container(
+                              margin: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image:
+                                          FileImage(_imageFileList[index - 1]),
+                                      fit: BoxFit.cover)),
+                            );
+                    }),
+                uploading
+                    ? Center(
+                        child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            child: Text(
+                              'uploading...',
+                              style: TextStyle(fontSize: 20),
                             ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CircularProgressIndicator(
+                            value: val,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.green),
                           )
-                        : Container(
-                            margin: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: FileImage(_imageFileList[index - 1]),
-                                    fit: BoxFit.cover)),
-                          );
-                  }),
-            ),
+                        ],
+                      ))
+                    : Container(),
+              ],
+            )),
+            new FlatButton(
+                onPressed: () {
+                  setState(() {
+                    uploading =
+                        true; // update state boolean variable uploading to true
+                  });
+                  uploadFile().whenComplete(() => Navigator.of(context).pop());
+                },
+                child: new Text('upload')),
             SizedBox(
               height: 20.0,
             ),
@@ -156,16 +194,30 @@ class _HomeState extends State<HomeScreen> {
   }
 
   Future uploadFile() async {
+    int i = 1; //initialized counter of progress bar to 1st image
+
     for (var img in _imageFileList) {
+      setState(() {
+        val = i /
+            _imageFileList
+                .length; // set progress state of circular to fraction of total images uploaded
+      });
       ref = firebase_storage.FirebaseStorage.instance
           .ref()
           .child('images/${Path.basename(img.path)}');
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
           imgRef.add({'url': value});
+          i++; // after each image upload success to firestore increment state of circular progress bar
         });
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    imgRef = FirebaseFirestore.instance.collection('imageURLs');
   }
 
   Future getImage() async {
