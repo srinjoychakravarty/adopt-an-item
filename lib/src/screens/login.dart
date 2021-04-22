@@ -53,50 +53,90 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            ElevatedButton(
-                child: Text('Sign in'),
-                onPressed: () => _signin(_email, _password)),
-            ElevatedButton(
-              child: Text('Register'),
+            ElevatedButton.icon(
+              onPressed: () => _signin(_email, _password),
+              icon: Icon(Icons.vpn_key_rounded),
+              label: Text(
+                'Sign In',
+                style: TextStyle(color: Colors.black), //white or black
+              ),
+            ),
+            ElevatedButton.icon(
               onPressed: () => _signup(_email, _password),
-            )
+              icon: Icon(Icons.format_list_bulleted_rounded),
+              label: Text(
+                'Register',
+                style: TextStyle(color: Colors.black), //white or black
+              ),
+            ),
           ]),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      final GoogleSignInAccount googleUser =
-                          await GoogleSignIn().signIn();
-                      final GoogleSignInAuthentication googleAuth =
-                          await googleUser.authentication;
+              ElevatedButton.icon(
+                onPressed: () async {
+                  try {
+                    final GoogleSignInAccount googleUser =
+                        await GoogleSignIn().signIn();
+                    final GoogleSignInAuthentication googleAuth =
+                        await googleUser.authentication;
 
-                      final OAuthCredential credential =
-                          GoogleAuthProvider.credential(
-                              accessToken: googleAuth.accessToken,
-                              idToken: googleAuth.idToken);
+                    final OAuthCredential credential =
+                        GoogleAuthProvider.credential(
+                            accessToken: googleAuth.accessToken,
+                            idToken: googleAuth.idToken);
 
-                      await FirebaseAuth.instance
-                          .signInWithCredential(credential)
-                          .then((value) => Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
-                                  builder: (context) => HomeScreen())));
-                    } on FirebaseAuthException catch (error) {
-                      Fluttertoast.showToast(
-                          msg: error.message.toString(),
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 8,
-                          backgroundColor: Colors.brown.shade200,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    }
-                  },
-                  child: Text(
-                    'Google Signin',
-                    style: TextStyle(fontSize: 20),
-                  )),
+                    await FirebaseAuth.instance
+                        .signInWithCredential(credential)
+                        .then((value) => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen())));
+                  } on FirebaseAuthException catch (error) {
+                    Fluttertoast.showToast(
+                        msg: error.message.toString(),
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 8,
+                        backgroundColor: Colors.brown.shade200,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                },
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.lime)), //Colors.lime.shade700 or blue.shade900
+                icon: Icon(
+                  Icons.email,
+                  color: Colors.black, //white or black
+                ),
+                label: Text(
+                  'Signin with Google',
+                  style: TextStyle(
+                      fontSize: 20, color: Colors.black), //white or black
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => PhoneScreen(),
+                )),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.lime)), //Colors.lime.shade700 or blue.shade900
+                icon: Icon(
+                  Icons.phone_android_rounded,
+                  color: Colors.black, //white or black
+                ),
+                label: Text(
+                  'Signin with Phone',
+                  style: TextStyle(
+                      fontSize: 20, color: Colors.black), //white or black
+                ),
+              )
             ],
           ),
           Row(
@@ -104,28 +144,13 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               TextButton(
                   child: Text(
-                    'Reset Password?',
+                    'Forgot your password?',
                     style: TextStyle(
                       color: Colors.lime.shade700,
                     ),
                   ),
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ResetScreen(),
-                      )))
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                  child: Text(
-                    'Login Using Phone?',
-                    style: TextStyle(
-                      color: Colors.lime.shade700,
-                    ),
-                  ),
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PhoneScreen(),
                       )))
             ],
           )
