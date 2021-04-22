@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_app/src/screens/home.dart';
 import 'package:login_app/src/screens/reset.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -50,6 +52,39 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            ElevatedButton(
+                onPressed: () async {
+                  try {
+                    final GoogleSignInAccount googleUser =
+                        await GoogleSignIn().signIn();
+                    final GoogleSignInAuthentication googleAuth =
+                        await googleUser.authentication;
+
+                    final OAuthCredential credential =
+                        GoogleAuthProvider.credential(
+                            idToken: googleAuth.idToken,
+                            accessToken: googleAuth.accessToken);
+
+                    await FirebaseAuth.instance
+                        .signInWithCredential(credential)
+                        .then((signedInUser) => Navigator.of(context)
+                            .pushReplacement(MaterialPageRoute(
+                                builder: (context) => HomeScreen())));
+                  } on FirebaseAuthException catch (error) {
+                    Fluttertoast.showToast(
+                        msg: error.message.toString(),
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 8,
+                        backgroundColor: Colors.brown.shade200,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                },
+                child: Text(
+                  'Google Signin',
+                  style: TextStyle(fontSize: 20),
+                )),
             RaisedButton(
                 color: Theme.of(context).accentColor,
                 textColor: Colors.white,
