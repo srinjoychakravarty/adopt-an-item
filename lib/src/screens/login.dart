@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.black, //white or black
                 ),
                 label: Text(
-                  'Signin with Google',
+                  'Sign in with Google',
                   style: TextStyle(
                       fontSize: 20, color: Colors.black), //white or black
                 ),
@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.black, //white or black
                 ),
                 label: Text(
-                  'Signin with Phone',
+                  'Sign in with Phone',
                   style: TextStyle(
                       fontSize: 20, color: Colors.black), //white or black
                 ),
