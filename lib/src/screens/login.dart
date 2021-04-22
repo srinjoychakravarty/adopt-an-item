@@ -103,16 +103,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.lime)), //Colors.lime.shade700 or blue.shade900
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors
+                        .blue
+                        .shade900)), //Colors.lime.shade700 or blue.shade900
                 icon: Icon(
                   Icons.email,
-                  color: Colors.black, //white or black
+                  color: Colors.white, //white or black
                 ),
                 label: Text(
                   'Login with Google',
                   style: TextStyle(
-                      fontSize: 20, color: Colors.black), //white or black
+                      fontSize: 20, color: Colors.white), //white or black
                 ),
               ),
             ],
@@ -125,16 +126,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (context) => PhoneScreen(),
                 )),
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.lime)), //Colors.lime.shade700 or blue.shade900
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors
+                        .grey
+                        .shade900)), //Colors.lime.shade700 or blue.shade900
                 icon: Icon(
                   Icons.phone_android_rounded,
-                  color: Colors.black, //white or black
+                  color: Colors.white, //white or black
                 ),
                 label: Text(
                   'Login with Phone',
                   style: TextStyle(
-                      fontSize: 20, color: Colors.black), //white or black
+                      fontSize: 20, color: Colors.white), //white or black
                 ),
               )
             ],
