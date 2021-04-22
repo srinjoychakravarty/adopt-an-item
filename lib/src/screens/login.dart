@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_app/src/screens/home.dart';
+import 'package:login_app/src/screens/phone.dart';
 import 'package:login_app/src/screens/reset.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -85,14 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Google Signin',
                   style: TextStyle(fontSize: 20),
                 )),
-            RaisedButton(
-                color: Theme.of(context).accentColor,
-                textColor: Colors.white,
+            ElevatedButton(
                 child: Text('Sign in'),
                 onPressed: () => _signin(_email, _password)),
-            RaisedButton(
-              color: Theme.of(context).accentColor,
-              textColor: Colors.white,
+            ElevatedButton(
               child: Text('Register'),
               onPressed: () => _signup(_email, _password),
             )
@@ -109,6 +106,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ResetScreen(),
+                      )))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  child: Text(
+                    'Login Using Phone?',
+                    style: TextStyle(
+                      color: Colors.lime.shade700,
+                    ),
+                  ),
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PhoneScreen(),
                       )))
             ],
           )
