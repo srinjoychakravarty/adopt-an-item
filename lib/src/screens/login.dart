@@ -54,39 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             ElevatedButton(
-                onPressed: () async {
-                  try {
-                    final GoogleSignInAccount googleUser =
-                        await GoogleSignIn().signIn();
-                    final GoogleSignInAuthentication googleAuth =
-                        await googleUser.authentication;
-
-                    final OAuthCredential credential =
-                        GoogleAuthProvider.credential(
-                            accessToken: googleAuth.accessToken,
-                            idToken: googleAuth.idToken);
-
-                    await FirebaseAuth.instance
-                        .signInWithCredential(credential)
-                        .then((value) => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen())));
-                  } on FirebaseAuthException catch (error) {
-                    Fluttertoast.showToast(
-                        msg: error.message.toString(),
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 8,
-                        backgroundColor: Colors.brown.shade200,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  }
-                },
-                child: Text(
-                  'Google Signin',
-                  style: TextStyle(fontSize: 20),
-                )),
-            ElevatedButton(
                 child: Text('Sign in'),
                 onPressed: () => _signin(_email, _password)),
             ElevatedButton(
@@ -94,6 +61,44 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () => _signup(_email, _password),
             )
           ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      final GoogleSignInAccount googleUser =
+                          await GoogleSignIn().signIn();
+                      final GoogleSignInAuthentication googleAuth =
+                          await googleUser.authentication;
+
+                      final OAuthCredential credential =
+                          GoogleAuthProvider.credential(
+                              accessToken: googleAuth.accessToken,
+                              idToken: googleAuth.idToken);
+
+                      await FirebaseAuth.instance
+                          .signInWithCredential(credential)
+                          .then((value) => Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                                  builder: (context) => HomeScreen())));
+                    } on FirebaseAuthException catch (error) {
+                      Fluttertoast.showToast(
+                          msg: error.message.toString(),
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 8,
+                          backgroundColor: Colors.brown.shade200,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  },
+                  child: Text(
+                    'Google Signin',
+                    style: TextStyle(fontSize: 20),
+                  )),
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
