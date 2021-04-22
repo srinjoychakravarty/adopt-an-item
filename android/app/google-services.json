@@ -44,11 +44,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "66376083910-rqo9hip7lfnmt41cl0liacus8n9k4ejp.apps.googleusercontent.com",
+          "client_id": "66376083910-3i0cvg0vict49dblt2830n12fa3l90cr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.login_app",
-            "certificate_hash": "56fe2e8ff7d1caa8038c1cec7194e7e6762b48a6"
+            "certificate_hash": "f66350e5dba3e32aa81022f86e7bc9f71858bf54"
           }
         },
         {

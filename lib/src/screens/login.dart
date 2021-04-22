@@ -62,13 +62,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     final OAuthCredential credential =
                         GoogleAuthProvider.credential(
-                            idToken: googleAuth.idToken,
-                            accessToken: googleAuth.accessToken);
+                            accessToken: googleAuth.accessToken,
+                            idToken: googleAuth.idToken);
 
                     await FirebaseAuth.instance
                         .signInWithCredential(credential)
-                        .then((signedInUser) => Navigator.of(context)
-                            .pushReplacement(MaterialPageRoute(
+                        .then((value) => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
                                 builder: (context) => HomeScreen())));
                   } on FirebaseAuthException catch (error) {
                     Fluttertoast.showToast(
