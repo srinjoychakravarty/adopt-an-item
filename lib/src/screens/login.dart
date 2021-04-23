@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         .blue
                         .shade900)), //Colors.lime.shade700 or blue.shade900
                 icon: Icon(
-                  Icons.email,
+                  Icons.email_rounded,
                   color: Colors.white, //white or black
                 ),
                 label: Text(
@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(Colors
                         .grey
-                        .shade900)), //Colors.lime.shade700 or blue.shade900
+                        .shade700)), //Colors.lime.shade700 or blue.shade900
                 icon: Icon(
                   Icons.phone_android_rounded,
                   color: Colors.white, //white or black
