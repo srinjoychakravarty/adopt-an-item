@@ -17,9 +17,16 @@ import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'dart:io' as io;
 import 'dart:async';
 
+import 'package:login_app/src/screens/login.dart';
+
 class HomeScreen extends StatefulWidget {
+  // final auth = FirebaseAuth.instance;
   HomeScreen({Key? key}) : super(key: key);
   final String title = 'Register Item';
+  // final LoginScreen loginScreen = LoginScreen();
+
+  // final _LoginScreenState _loginScreenState = _LoginScreenState();
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -75,7 +82,19 @@ class _HomeState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        elevation: 0.0,
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(Icons.person),
+            label: Text('Log Out'),
+            onPressed: () async {
+              await logout();
+            },
+          )
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(0.0),
         child: Column(
@@ -208,6 +227,18 @@ class _HomeState extends State<HomeScreen> {
     );
   }
 
+  Future logout() async {
+    try {
+      await auth.signOut();
+      // Navigator.of(context).pop();
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()));
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+  }
+
   chooseImage() async {
     // final _picker = ImagePicker();
     final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
@@ -216,86 +247,6 @@ class _HomeState extends State<HomeScreen> {
     });
     if (pickedFile.path == null) retrieveLostData();
   }
-
-  // Future imageUploader(pickedFile) async {
-  //   final _storage = FirebaseStorage.instance;
-  //   await Permission.photos.request();
-  //   var permissionStatus = await Permission.photos.status;
-  //   if (permissionStatus.isGranted) {
-  //     var file = File(pickedFile.path);
-  //     // ignore: unnecessary_null_comparison
-  //     if (pickedFile != null) {
-  //       // Upload to Firebase
-  //       var snapshot =
-  //           await _storage.ref().child(getRandomString(15)).putFile(file);
-  //       var downloadUrl = await snapshot.ref.getDownloadURL();
-  //       print(downloadUrl);
-  //       setState(() {
-  //         imageUrl = downloadUrl;
-  //       });
-  //     } else {
-  //       print('Error: No image path detected!');
-  //     }
-  //   } else {
-  //     print('Error: Gallery permission not granted!');
-  //   }
-  // }
-
-  // chooseImageFromGallery() async {
-  //   // final _picker = ImagePicker();
-  //   final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
-  //   setState(() {
-  //     _imageFileList.add(File(pickedFile.path));
-  //   });
-  //   if (pickedFile.path == null) {
-  //     retrieveLostData();
-  //   } else {
-  //     _image = File(pickedFile.path);
-  //     processImageLabels();
-  //     imageUploader(pickedFile);
-  //   }
-  // }
-
-  // chooseImageUsingCamera() async {
-  //   // final _picker = ImagePicker();
-  //   final pickedFile = (await _picker.getImage(source: ImageSource.camera))!;
-  //   setState(() {
-  //     _imageFileList.add(File(pickedFile.path));
-  //   });
-  //   if (pickedFile.path == null) {
-  //     retrieveLostData();
-  //   } else {
-  //     _image = File(pickedFile.path);
-  //     processImageLabels();
-  //     imageUploader(pickedFile);
-  //   }
-  // }
-
-  // addImage() async {
-  //   // final _picker = ImagePicker();
-  //   showModalBottomSheet<void>(
-  //     context: context,
-  //     builder: (context) => ListView(children: [
-  //       ListTile(
-  //         leading: Icon(Icons.camera_alt),
-  //         title: Text('Camera'),
-  //         onTap: () {
-  //           Navigator.pop(context);
-  //           chooseImageUsingCamera();
-  //         },
-  //       ),
-  //       ListTile(
-  //         leading: Icon(Icons.photo_album),
-  //         title: Text('Gallery'),
-  //         onTap: () {
-  //           Navigator.pop(context);
-  //           chooseImageFromGallery();
-  //         },
-  //       ),
-  //     ]),
-  //   );
-  //   // final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
-  // }
 
   Future multiImageUploader(selectedSource) async {
     final pickedFile = (await _picker.getImage(source: selectedSource))!;
@@ -309,33 +260,10 @@ class _HomeState extends State<HomeScreen> {
       print("-----------------------ML------------------");
       _image = File(pickedFile.path);
       processImageLabels();
-
-      // final _storage = FirebaseStorage.instance;
-      // await Permission.photos.request();
-      // var permissionStatus = await Permission.photos.status;
-      // if (permissionStatus.isGranted) {
-      //   var file = File(pickedFile.path);
-      //   // ignore: unnecessary_null_comparison
-      //   if (pickedFile != null) {
-      //     // Upload to Firebase
-      //     var snapshot =
-      //         await _storage.ref().child(getRandomString(15)).putFile(file);
-      //     var downloadUrl = await snapshot.ref.getDownloadURL();
-      //     print(downloadUrl);
-      //     setState(() {
-      //       imageUrl = downloadUrl;
-      //     });
-      //   } else {
-      //     print('Error: No image path detected!');
-      //   }
-      // } else {
-      //   print('Error: Gallery permission not granted!');
-      // }
     }
   }
 
   addSourceImage() async {
-    // final _picker = ImagePicker();
     showModalBottomSheet<void>(
       context: context,
       builder: (context) => ListView(children: [
@@ -357,7 +285,6 @@ class _HomeState extends State<HomeScreen> {
         ), //here
       ]),
     );
-    // final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
   }
 
   Future<void> retrieveLostData() async {

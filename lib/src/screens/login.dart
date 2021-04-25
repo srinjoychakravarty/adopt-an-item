@@ -8,13 +8,24 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
+  final auth = FirebaseAuth.instance;
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
+
+  // Future logout() async {
+  //   try {
+  //     return await auth.signOut();
+  //   } catch (error) {
+  //     print(error.toString());
+  //     return null;
+  //   }
+  // }
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   late String _email, _password;
-  final auth = FirebaseAuth.instance;
+  // final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -163,8 +174,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _signup(String _email, String _password) async {
     try {
-      await auth.createUserWithEmailAndPassword(
-          email: _email, password: _password);
+      await widget.auth
+          .createUserWithEmailAndPassword(email: _email, password: _password);
 
       // Success
       Navigator.of(context).pushReplacement(
@@ -174,8 +185,8 @@ class _LoginScreenState extends State<LoginScreen> {
           msg: error.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 8,
-          backgroundColor: Colors.brown.shade200,
+          timeInSecForIosWeb: 60,
+          backgroundColor: Colors.brown.shade500,
           textColor: Colors.white,
           fontSize: 16.0);
     }
@@ -183,7 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _signin(String _email, String _password) async {
     try {
-      await auth.signInWithEmailAndPassword(email: _email, password: _password);
+      await widget.auth
+          .signInWithEmailAndPassword(email: _email, password: _password);
 
       // Success
       Navigator.of(context).pushReplacement(
@@ -193,8 +205,8 @@ class _LoginScreenState extends State<LoginScreen> {
           msg: error.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 8,
-          backgroundColor: Colors.brown.shade200,
+          timeInSecForIosWeb: 60,
+          backgroundColor: Colors.brown.shade500,
           textColor: Colors.white,
           fontSize: 16.0);
     }

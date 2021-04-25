@@ -20,7 +20,7 @@ dependencies:
   firebase_storage: 8.0.3
   permission_handler: 6.1.1
   firebase_auth: 1.0.3
-  fluttertoast: 8.0.4
+  fluttertoast: 8.0.3
   extended_image: 4.0.1
   flutter_screenutil: 5.0.0
   cloud_firestore: 1.0.5
