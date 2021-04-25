@@ -153,6 +153,7 @@ class _HomeState extends State<HomeScreen> {
                           true; // update state boolean variable uploading to true
                     });
                     uploadFile();
+                    //to pop out the indicator once work is done --- Resume Point
                     // uploadFile().whenComplete(() => Navigator.of(context)
                     //     .pushReplacement(MaterialPageRoute(
                     //         builder: (context) => HomeScreen())));
