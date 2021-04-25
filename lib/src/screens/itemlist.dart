@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
 import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:login_app/src/screens/login.dart';
 
 class ItemList extends StatefulWidget {
   ItemList({Key? key, required this.title}) : super(key: key);
@@ -16,6 +18,18 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
+  final auth = FirebaseAuth.instance;
+  Future logout() async {
+    try {
+      await auth.signOut();
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()));
+    } catch (error) {
+      print(error.toString());
+      return null;
+    }
+  }
+
   final dbRef = FirebaseDatabase.instance.reference().child("items");
   List<Map<dynamic, dynamic>> lists = [];
 
@@ -24,6 +38,19 @@ class _ItemListState extends State<ItemList> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          elevation: 0.0,
+          actions: <Widget>[
+            TextButton.icon(
+              icon: Icon(
+                Icons.logout_rounded,
+                color: Colors.white,
+              ),
+              label: Text('Log Out', style: TextStyle(color: Colors.white)),
+              onPressed: () async {
+                await logout();
+              },
+            )
+          ],
         ),
         body: FutureBuilder(
             future: dbRef.once(),
@@ -46,7 +73,7 @@ class _ItemListState extends State<ItemList> {
                             Text("Age: " + lists[index]["age"]),
                             Text("Type: " + lists[index]["type"]),
                             SizedBox(
-                              height: 300,
+                              height: 400,
                               child: GridView.count(
                                 crossAxisCount: 2,
                                 children: [
@@ -56,9 +83,11 @@ class _ItemListState extends State<ItemList> {
                                       children: [
                                         Material(
                                           shape: CircleBorder(),
-                                          elevation: 3.0,
+                                          elevation: 2.0,
                                           child: Image.network(
-                                            i,
+                                            i != ""
+                                                ? i
+                                                : "https://en.wikipedia.org/wiki/No_symbol#/media/File:ProhibitionSign2.svg", //to use this for not present images
                                             fit: BoxFit.fitWidth,
                                             height: 100,
                                             width: 100,
@@ -75,7 +104,7 @@ class _ItemListState extends State<ItemList> {
                       );
                     });
               }
-              return CircularProgressIndicator();
+              return CircularProgressIndicator(strokeWidth: 10);
             }));
   }
 

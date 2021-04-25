@@ -12,33 +12,41 @@ class LoginScreen extends StatefulWidget {
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
-
-  // Future logout() async {
-  //   try {
-  //     return await auth.signOut();
-  //   } catch (error) {
-  //     print(error.toString());
-  //     return null;
-  //   }
-  // }
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   late String _email, _password;
-  // final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Item Adoption Centre  ⛏',
-          style: TextStyle(color: Colors.grey.shade700),
-        ),
-      ),
+      resizeToAvoidBottomInset: false,
+      appBar:
+          AppBar(title: Text("🔐 Login "), elevation: 0.0, actions: <Widget>[
+        TextButton.icon(
+          icon: Icon(
+            Icons.login_rounded,
+            color: Colors.white,
+          ),
+          label: Text(
+            "v0.1.11-a.1",
+            textAlign: TextAlign.left,
+            style: TextStyle(color: Colors.white, fontSize: 9),
+          ),
+          onPressed: () {},
+        )
+      ]),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text("Welcome to Hyper Vision Sale",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 42,
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.italic,
+                  color: Colors.teal.shade900)),
+          Icon(Icons.store_outlined, size: 369), //replace with image
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -69,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
               icon: Icon(Icons.vpn_key_rounded),
               label: Text(
                 'Sign In',
-                style: TextStyle(color: Colors.black), //white or black
+                style: TextStyle(color: Colors.white),
               ),
             ),
             ElevatedButton.icon(
@@ -77,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
               icon: Icon(Icons.format_list_bulleted_rounded),
               label: Text(
                 'Register',
-                style: TextStyle(color: Colors.black), //white or black
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ]),
@@ -114,17 +122,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors
-                        .blue
-                        .shade900)), //Colors.lime.shade700 or blue.shade900
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue.shade900)),
                 icon: Icon(
                   Icons.email_rounded,
-                  color: Colors.white, //white or black
+                  color: Colors.white,
                 ),
                 label: Text(
                   'Login with Google',
-                  style: TextStyle(
-                      fontSize: 20, color: Colors.white), //white or black
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
             ],
@@ -137,17 +143,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (context) => PhoneScreen(),
                 )),
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors
-                        .grey
-                        .shade700)), //Colors.lime.shade700 or blue.shade900
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.grey.shade700)),
                 icon: Icon(
                   Icons.phone_android_rounded,
-                  color: Colors.white, //white or black
+                  color: Colors.white,
                 ),
                 label: Text(
                   'Login with Phone',
-                  style: TextStyle(
-                      fontSize: 20, color: Colors.white), //white or black
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               )
             ],
@@ -159,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     'Forgot your password?',
                     style: TextStyle(
-                      color: Colors.lime.shade700,
+                      color: Colors.teal.shade900,
                     ),
                   ),
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
@@ -176,8 +180,6 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await widget.auth
           .createUserWithEmailAndPassword(email: _email, password: _password);
-
-      // Success
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => HomeScreen()));
     } on FirebaseAuthException catch (error) {
@@ -196,8 +198,6 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await widget.auth
           .signInWithEmailAndPassword(email: _email, password: _password);
-
-      // Success
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => HomeScreen()));
     } on FirebaseAuthException catch (error) {

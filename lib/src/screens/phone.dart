@@ -61,13 +61,13 @@ class _PhoneScreenState extends State<PhoneScreen> {
         TextField(
           controller: phoneController,
           decoration: InputDecoration(
-            hintText: "Phone Number",
+            hintText: "🔢 Phone Number",
           ),
         ),
         SizedBox(
           height: 16,
         ),
-        TextButton(
+        ElevatedButton(
           onPressed: () async {
             setState(() {
               showLoading = true;
@@ -100,9 +100,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
             );
           },
           child: Text(
-            'SEND',
+            '📟 SEND',
             style: TextStyle(
-              color: Colors.lime.shade700,
+              color: Colors.white,
             ),
           ),
         ),
@@ -118,13 +118,13 @@ class _PhoneScreenState extends State<PhoneScreen> {
         TextField(
           controller: otpController,
           decoration: InputDecoration(
-            hintText: "Enter OTP",
+            hintText: "📲 Enter  OTP",
           ),
         ),
         SizedBox(
           height: 16,
         ),
-        TextButton(
+        ElevatedButton(
           onPressed: () async {
             PhoneAuthCredential phoneAuthCredential =
                 PhoneAuthProvider.credential(
@@ -134,9 +134,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
             signInWithPhoneAuthCredential(phoneAuthCredential);
           },
           child: Text(
-            "VERIFY",
+            "🔑 VERIFY",
             style: TextStyle(
-              color: Colors.lime.shade700,
+              color: Colors.white,
             ),
           ),
         ),
