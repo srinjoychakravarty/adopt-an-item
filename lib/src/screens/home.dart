@@ -18,10 +18,6 @@ import 'dart:io' as io;
 import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
-  //  List<String> firebaseStorageURLArray = [];
-  // RegisterItem({Key? key, required this.firebaseStorageURLArray})
-  //     : super(key: key);
-
   HomeScreen({Key? key}) : super(key: key);
   final String title = 'Register Item';
   @override
@@ -166,9 +162,9 @@ class _HomeState extends State<HomeScreen> {
                   }
                 },
                 child: new Text('Upload Images')),
-            // SizedBox(
-            //   height: 20.0,
-            // ),
+            SizedBox(
+              height: 20.0,
+            ),
             Container(
               child: Center(
                 child: result == null
@@ -592,7 +588,7 @@ class _RegisterItemState extends State<RegisterItem> {
                           "name": nameController.text,
                           "age": ageController.text,
                           "type": dropdownValue,
-                          "image": widget.firebaseStorageURLArray,
+                          "images": widget.firebaseStorageURLArray,
                         }).then((_) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Successfully Added')));
