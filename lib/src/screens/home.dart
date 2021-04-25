@@ -15,6 +15,7 @@ import 'dart:math';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'dart:io' as io;
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -40,6 +41,36 @@ class _HomeState extends State<HomeScreen> {
   late CollectionReference imgRef;
   late firebase_storage.Reference ref;
   List<File> _imageFileList = [];
+
+//Multi Image Upload
+  Future<void> _uploadMoreImageDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('AlertDialog Title'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Image Selection Error'),
+                Text('Please select more than 1 image to upload'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Approve'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+//End
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,10 +109,11 @@ class _HomeState extends State<HomeScreen> {
                       return index == 0
                           ? Center(
                               child: IconButton(
-                                icon: Icon(Icons.add),
+                                icon: Icon(Icons.camera),
                                 onPressed: () {
                                   !uploading
-                                      ? chooseImage()
+                                      ? addSourceImage() //chooseImage()//commented CS code
+                                      // ignore: unnecessary_statements
                                       : null; // disable upload button when images in process of uploading
                                 },
                               ),
@@ -100,12 +132,6 @@ class _HomeState extends State<HomeScreen> {
                         child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Container(
-                            child: Text(
-                              'uploading...',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
                           SizedBox(
                             height: 10,
                           ),
@@ -119,54 +145,62 @@ class _HomeState extends State<HomeScreen> {
                     : Container(),
               ],
             )),
-            new FlatButton(
+            new TextButton(
                 onPressed: () {
-                  setState(() {
-                    uploading =
-                        true; // update state boolean variable uploading to true
-                  });
-                  uploadFile().whenComplete(() => Navigator.of(context).pop());
+                  if (_imageFileList.length > 1) {
+                    setState(() {
+                      uploading =
+                          true; // update state boolean variable uploading to true
+                    });
+                    uploadFile();
+                    // uploadFile().whenComplete(() => Navigator.of(context)
+                    //     .pushReplacement(MaterialPageRoute(
+                    //         builder: (context) => HomeScreen())));
+                  } else {
+                    _uploadMoreImageDialog();
+                  }
                 },
-                child: new Text('upload')),
-            SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              child: Center(
-                child: result == null
-                    ? Text("Nothing here...")
-                    : Text(
-                        result,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            FloatingActionButton(
-              onPressed: () => getImage(),
-              tooltip: 'Pick an item image...',
-              child: Icon(Icons.add_a_photo),
-              backgroundColor: Colors.brown,
-              foregroundColor: Colors.white,
-            ),
-            RaisedButton(
-              child: Text('Upload Image'),
-              color: Colors.brown,
-              textColor: Colors.white,
-              onPressed: () => uploadImage(),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
+                child: new Text('Upload Images')),
+            // SizedBox(
+            //   height: 20.0,
+            // ),
+            // Container(
+            //   child: Center(
+            //     child: result == null
+            //         ? Text("Nothing here...")
+            //         : Text(
+            //             result,
+            //             style: TextStyle(fontWeight: FontWeight.bold),
+            //           ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10.0,
+            // ),
+            // FloatingActionButton(
+            //   onPressed: () => getImage(),
+            //   tooltip: 'Pick an item image...',
+            //   child: Icon(Icons.add_a_photo),
+            //   backgroundColor: Colors.brown,
+            //   foregroundColor: Colors.white,
+            // ), //htmodification
+            // ElevatedButton(
+            //   child: Text('Upload Image'),
+            //   style: ButtonStyle(
+            //       backgroundColor:
+            //           MaterialStateProperty.all<Color>(Colors.grey.shade700)),
+            //   onPressed: () => uploadImage(),
+            // ),
+            // SizedBox(
+            //   height: 20.0,
+            // ),
             Text("Put an Item up for Adoption",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                     fontFamily: 'Roboto',
                     fontStyle: FontStyle.italic)),
-            RegisterItem(firebaseStorageURL: imageUrl),
+            RegisterItem(firebaseStorageURLArray: imageUrls), //summon url
           ],
         ),
       ),
@@ -180,6 +214,159 @@ class _HomeState extends State<HomeScreen> {
       _imageFileList.add(File(pickedFile.path));
     });
     if (pickedFile.path == null) retrieveLostData();
+  }
+
+  // Future imageUploader(pickedFile) async {
+  //   final _storage = FirebaseStorage.instance;
+  //   await Permission.photos.request();
+  //   var permissionStatus = await Permission.photos.status;
+  //   if (permissionStatus.isGranted) {
+  //     var file = File(pickedFile.path);
+  //     // ignore: unnecessary_null_comparison
+  //     if (pickedFile != null) {
+  //       // Upload to Firebase
+  //       var snapshot =
+  //           await _storage.ref().child(getRandomString(15)).putFile(file);
+  //       var downloadUrl = await snapshot.ref.getDownloadURL();
+  //       print(downloadUrl);
+  //       setState(() {
+  //         imageUrl = downloadUrl;
+  //       });
+  //     } else {
+  //       print('Error: No image path detected!');
+  //     }
+  //   } else {
+  //     print('Error: Gallery permission not granted!');
+  //   }
+  // }
+
+  // chooseImageFromGallery() async {
+  //   // final _picker = ImagePicker();
+  //   final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
+  //   setState(() {
+  //     _imageFileList.add(File(pickedFile.path));
+  //   });
+  //   if (pickedFile.path == null) {
+  //     retrieveLostData();
+  //   } else {
+  //     _image = File(pickedFile.path);
+  //     processImageLabels();
+  //     imageUploader(pickedFile);
+  //   }
+  // }
+
+  // chooseImageUsingCamera() async {
+  //   // final _picker = ImagePicker();
+  //   final pickedFile = (await _picker.getImage(source: ImageSource.camera))!;
+  //   setState(() {
+  //     _imageFileList.add(File(pickedFile.path));
+  //   });
+  //   if (pickedFile.path == null) {
+  //     retrieveLostData();
+  //   } else {
+  //     _image = File(pickedFile.path);
+  //     processImageLabels();
+  //     imageUploader(pickedFile);
+  //   }
+  // }
+
+  // addImage() async {
+  //   // final _picker = ImagePicker();
+  //   showModalBottomSheet<void>(
+  //     context: context,
+  //     builder: (context) => ListView(children: [
+  //       ListTile(
+  //         leading: Icon(Icons.camera_alt),
+  //         title: Text('Camera'),
+  //         onTap: () {
+  //           Navigator.pop(context);
+  //           chooseImageUsingCamera();
+  //         },
+  //       ),
+  //       ListTile(
+  //         leading: Icon(Icons.photo_album),
+  //         title: Text('Gallery'),
+  //         onTap: () {
+  //           Navigator.pop(context);
+  //           chooseImageFromGallery();
+  //         },
+  //       ),
+  //     ]),
+  //   );
+  //   // final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
+  // }
+
+  Future multiImageUploader(selectedSource) async {
+    final pickedFile = (await _picker.getImage(source: selectedSource))!;
+    setState(() {
+      _imageFileList.add(File(pickedFile.path));
+    });
+    // ignore: unnecessary_null_comparison
+    if (pickedFile.path == null) {
+      retrieveLostData();
+    } else {
+      _image = File(pickedFile.path);
+      FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(_image);
+      ImageLabeler labeler = FirebaseVision.instance.imageLabeler();
+      var _imageLabels = await labeler.processImage(myImage);
+      result = "";
+      for (ImageLabel imageLabel in _imageLabels) {
+        setState(() {
+          result = result +
+              imageLabel.text +
+              ":" +
+              imageLabel.confidence.toString() +
+              "\n";
+        });
+      }
+      // final _storage = FirebaseStorage.instance;
+      // await Permission.photos.request();
+      // var permissionStatus = await Permission.photos.status;
+      // if (permissionStatus.isGranted) {
+      //   var file = File(pickedFile.path);
+      //   // ignore: unnecessary_null_comparison
+      //   if (pickedFile != null) {
+      //     // Upload to Firebase
+      //     var snapshot =
+      //         await _storage.ref().child(getRandomString(15)).putFile(file);
+      //     var downloadUrl = await snapshot.ref.getDownloadURL();
+      //     print(downloadUrl);
+      //     setState(() {
+      //       imageUrl = downloadUrl;
+      //     });
+      //   } else {
+      //     print('Error: No image path detected!');
+      //   }
+      // } else {
+      //   print('Error: Gallery permission not granted!');
+      // }
+    }
+  }
+
+  addSourceImage() async {
+    // final _picker = ImagePicker();
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (context) => ListView(children: [
+        ListTile(
+          leading: Icon(Icons.camera_alt),
+          title: Text('Camera'),
+          onTap: () {
+            Navigator.pop(context);
+            multiImageUploader(ImageSource.camera);
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.photo_album),
+          title: Text('Gallery'),
+          onTap: () {
+            Navigator.pop(context);
+            multiImageUploader(ImageSource.gallery);
+          },
+        ), //here
+      ]),
+    );
+    // final pickedFile = (await _picker.getImage(source: ImageSource.gallery))!;
   }
 
   Future<void> retrieveLostData() async {
@@ -197,6 +384,8 @@ class _HomeState extends State<HomeScreen> {
   }
 
   Future uploadFile() async {
+    await Permission.photos.request();
+    //summon
     int i = 1; //initialized counter of progress bar to 1st image
 
     for (var img in _imageFileList) {
@@ -264,7 +453,7 @@ class _HomeState extends State<HomeScreen> {
 
     // Check Permissions
     await Permission.photos.request();
-
+    // await Permission.camera.request();
     var permissionStatus = await Permission.photos.status;
 
     if (permissionStatus.isGranted) {
@@ -301,8 +490,10 @@ class _HomeState extends State<HomeScreen> {
 }
 
 class RegisterItem extends StatefulWidget {
-  final String firebaseStorageURL;
-  RegisterItem({Key? key, required this.firebaseStorageURL}) : super(key: key);
+  // final String firebaseStorageURL;
+  List<String> firebaseStorageURLArray = [];
+  RegisterItem({Key? key, required this.firebaseStorageURLArray})
+      : super(key: key);
 
   @override
   _RegisterItemState createState() => _RegisterItemState();
@@ -310,9 +501,10 @@ class RegisterItem extends StatefulWidget {
 
 class _RegisterItemState extends State<RegisterItem> {
   String imageUrl = "";
+  List<String> imageUrls = [];
   final _formKey = GlobalKey<FormState>();
   final listOfPets = ["Clothing", "Food", "Electronics"];
-  String dropdownValue = 'Clothing';
+  String dropdownValue = 'Electronics';
   final nameController = TextEditingController();
   final ageController = TextEditingController();
   final dbRef = FirebaseDatabase.instance.reference().child("items");
@@ -405,7 +597,7 @@ class _RegisterItemState extends State<RegisterItem> {
                           "name": nameController.text,
                           "age": ageController.text,
                           "type": dropdownValue,
-                          "image": widget.firebaseStorageURL,
+                          "image": widget.firebaseStorageURLArray,
                         }).then((_) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Successfully Added')));
