@@ -18,6 +18,10 @@ import 'dart:io' as io;
 import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
+  //  List<String> firebaseStorageURLArray = [];
+  // RegisterItem({Key? key, required this.firebaseStorageURLArray})
+  //     : super(key: key);
+
   HomeScreen({Key? key}) : super(key: key);
   final String title = 'Register Item';
   @override
@@ -153,7 +157,7 @@ class _HomeState extends State<HomeScreen> {
                           true; // update state boolean variable uploading to true
                     });
                     uploadFile();
-                    //to pop out the indicator once work is done --- Resume Point
+                    //to pop out the indicator once work is ---Resume Point
                     // uploadFile().whenComplete(() => Navigator.of(context)
                     //     .pushReplacement(MaterialPageRoute(
                     //         builder: (context) => HomeScreen())));
@@ -165,16 +169,16 @@ class _HomeState extends State<HomeScreen> {
             // SizedBox(
             //   height: 20.0,
             // ),
-            // Container(
-            //   child: Center(
-            //     child: result == null
-            //         ? Text("Nothing here...")
-            //         : Text(
-            //             result,
-            //             style: TextStyle(fontWeight: FontWeight.bold),
-            //           ),
-            //   ),
-            // ),
+            Container(
+              child: Center(
+                child: result == null
+                    ? null
+                    : Text(
+                        result,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+              ),
+            ),
             // SizedBox(
             //   height: 10.0,
             // ),
@@ -306,20 +310,10 @@ class _HomeState extends State<HomeScreen> {
     if (pickedFile.path == null) {
       retrieveLostData();
     } else {
+      print("-----------------------ML------------------");
       _image = File(pickedFile.path);
-      FirebaseVisionImage myImage = FirebaseVisionImage.fromFile(_image);
-      ImageLabeler labeler = FirebaseVision.instance.imageLabeler();
-      var _imageLabels = await labeler.processImage(myImage);
-      result = "";
-      for (ImageLabel imageLabel in _imageLabels) {
-        setState(() {
-          result = result +
-              imageLabel.text +
-              ":" +
-              imageLabel.confidence.toString() +
-              "\n";
-        });
-      }
+      processImageLabels();
+
       // final _storage = FirebaseStorage.instance;
       // await Permission.photos.request();
       // var permissionStatus = await Permission.photos.status;
