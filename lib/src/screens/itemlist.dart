@@ -45,22 +45,31 @@ class _ItemListState extends State<ItemList> {
                             Text("Name: " + lists[index]["name"]),
                             Text("Age: " + lists[index]["age"]),
                             Text("Type: " + lists[index]["type"]),
-                            Image.network(lists[index]["image"]),
                             SizedBox(
-                                height: 300,
-                                child: GridView.count(
-                                  crossAxisCount: 2,
-                                  children: List.generate(4, (index) {
-                                    return Center(
-                                      child: Text(
-                                        'Item $index',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                      ),
-                                    );
-                                  }),
-                                )),
+                              height: 300,
+                              child: GridView.count(
+                                crossAxisCount: 2,
+                                children: [
+                                  ...lists[index]["images"].map(
+                                    (i) => Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Material(
+                                          shape: CircleBorder(),
+                                          elevation: 3.0,
+                                          child: Image.network(
+                                            i,
+                                            fit: BoxFit.fitWidth,
+                                            height: 100,
+                                            width: 100,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       );
