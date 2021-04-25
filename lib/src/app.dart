@@ -9,7 +9,7 @@ class App extends StatelessWidget {
       title: 'Item Adoption',
       theme: ThemeData(
         accentColor: Colors.brown.shade300,
-        primarySwatch: Colors.lime,
+        primarySwatch: Colors.teal,
       ),
       home: LoginScreen(),
     );

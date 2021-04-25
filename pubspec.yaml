@@ -1,5 +1,5 @@
 name: login_app
-description: A new Flutter project.
+description: Final Project by Chakravarty Srinjoy and Thakkar Hardik.
 
 publish_to: 'none' 
 
@@ -20,10 +20,26 @@ dependencies:
   firebase_storage: 8.0.3
   permission_handler: 6.1.1
   firebase_auth: 1.0.3
-  fluttertoast: 8.0.4
+  fluttertoast: 8.0.3
   extended_image: 4.0.1
   flutter_screenutil: 5.0.0
   cloud_firestore: 1.0.5
+<<<<<<< Updated upstream
+=======
+  google_sign_in: 4.5.9
+  camera: 
+  path_provider: 2.0.1
+  path: 1.8.0
+  multi_image_picker: 4.8.0
+  
+  #Future release work resume point
+  # flutter_facebook_auth: "^1.0.0"
+  # sign_in_with_apple: ^2.5.2
+  # crypto: ^2.1.5
+  # flutter_twitter_login: ^1.1.0
+  # github_sign_in: ^0.0.1
+  # location: 
+>>>>>>> Stashed changes
 
 dev_dependencies:
   flutter_test:
@@ -32,9 +48,13 @@ dev_dependencies:
   flutter_launcher_icons: ^0.9.0
 
 flutter_icons:
-  image_path: "icon/icon.png"
-  android: true
+  android: "launcher_icon"
   ios: true
+  image_path: "icon/icon.png"
+  image_path_android: "icon/icon.png"
+  image_path_ios: "icon/icon.png"
+  adaptive_icon_background: "icon/icon.png" # only available for Android 8.0 devices and above
+  adaptive_icon_foreground: "icon/icon.png" # only available for Android 8.0 devices and above
 
 flutter:
   assets:
